@@ -1,0 +1,47 @@
+import heapq
+
+class Graph():
+    def __init__(self, graph):
+        self.graph = graph
+
+    def dijkstra(self, start):
+        queue = [(0, start)]
+        distances = {vertex: float('infinity') for vertex in range(len(self.graph))}
+        distances[start] = 0
+
+        while queue:
+            current_distance, current_vertex = heapq.heappop(queue)
+
+            if current_distance > distances[current_vertex]:
+                continue
+
+            for neighbor, weight in enumerate(self.graph[current_vertex]):
+                if weight > 0:
+                    distance = current_distance + weight
+
+                    if distance < distances[neighbor]:
+                        distances[neighbor] = distance
+                        heapq.heappush(queue, (distance, neighbor))
+
+        return distances
+
+# Example usage with user input:
+num_vertices = int(input("Enter the number of vertices: "))
+graph_matrix = []
+
+print("Enter the adjacency matrix:")
+for _ in range(num_vertices):
+    row = list(map(int, input().split()))
+    graph_matrix.append(row)
+
+# Create a Graph instance with the user-input graph matrix
+user_graph = Graph(graph_matrix)
+
+# Get the source vertex from the user
+source_vertex = int(input("Enter the source vertex: "))
+
+# Run Dijkstra's algorithm
+result = user_graph.dijkstra(source_vertex)
+
+# Print the result
+print(f"Shortest distances from vertex {source_vertex}: {result}")
