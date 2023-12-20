@@ -1,0 +1,36 @@
+def floyd_warshall(graph):
+    num_vertices = len(graph)
+    
+    # Initialize the distance matrix
+    dist = [[float('inf')] * num_vertices for _ in range(num_vertices)]
+    for i in range(num_vertices):
+        dist[i][i] = 0
+        for j in range(num_vertices):
+            if graph[i][j] != 0:
+                dist[i][j] = graph[i][j]
+
+    # Floyd-Warshall algorithm
+    for k in range(num_vertices):
+        for i in range(num_vertices):
+            for j in range(num_vertices):
+                dist[i][j] = min(dist[i][j], dist[i][k] + dist[k][j])
+
+    return dist
+
+# Take user input for the number of vertices
+num_vertices = int(input("Enter the number of vertices: "))
+
+# Take user input for the adjacency matrix
+graph = []
+print("Enter the adjacency matrix (enter 0 for no direct connection):")
+for _ in range(num_vertices):
+    row = list(map(int, input().split()))
+    graph.append(row)
+
+# Run Floyd-Warshall algorithm
+result = floyd_warshall(graph)
+
+# Print the result
+print("Shortest distances between all pairs of vertices:")
+for row in result:
+    print(row)
